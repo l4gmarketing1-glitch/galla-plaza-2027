@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.ssr/
+.env
+.env.local
+data/
+*.log
+qa/
+*.zip
