@@ -1,6 +1,6 @@
 # Galla Plaza · Revelion 2027
 
-Landing page portabil, în română. Nu este publicat. Videoclipurile au fost generate cu Seedance 2.5 prin Higgsfield; fotografiile actuale ale restaurantelor și referința hărții sunt furnizate de utilizator.
+Landing page portabil, în română. Prezentare pentru client pe GitHub Pages: https://l4gmarketing1-glitch.github.io/galla-plaza-2027/. Videoclipurile au fost generate cu Seedance 2.5 prin Higgsfield; fotografiile actuale ale restaurantelor și referința hărții sunt furnizate de utilizator.
 
 ## Ce conține
 
@@ -68,3 +68,7 @@ Surse tehnice: [Google Event structured data](https://developers.google.com/sear
 ## Rezervare și Stripe
 
 Formularul unic include restaurant, scaune exacte, compoziția adulți/copii, contact și sumar. Selecțiile restaurantelor se păstrează separat pe durata vizitei. Cererile sunt preferințe și nu blochează inventarul. Schema salvează deja identificatorii locurilor, versiunea planului, moneda RON, suma în bani și starea de plată; integrarea Stripe și blocarea simultană a locurilor nu sunt încă implementate. Vezi [PAYMENT-PLAN.md](PAYMENT-PLAN.md). Pentru o instalare Supabase existentă, reaplică schema SQL actualizată.
+
+## Prezentare GitHub Pages
+
+Workflow-ul `.github/workflows/pages.yml` construiește și publică automat prezentarea de pe `main`. `pnpm run build:pages` configurează prefixul `/galla-plaza-2027/`, păstrează `noindex` și dezactivează trimiterea rezervărilor. Selecția locurilor și calculul prețului rămân interactive. Versiunea normală pentru Vercel folosește în continuare `pnpm run build` și formularul API.

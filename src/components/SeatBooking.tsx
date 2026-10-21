@@ -4,6 +4,7 @@ import { calculateTotal, validateBooking } from '../lib/galla/booking.mjs';
 import { getPlan, getSeatGroups, suggestSeats, PLAN_VERSION } from '../lib/galla/seating.mjs';
 import './seat-booking.css';
 
+const demo=import.meta.env.VITE_DEMO_MODE==='true';
 const money=(n:number)=>new Intl.NumberFormat('ro-RO').format(n);
 type Draft={seats:string[];children:number;zone:string};
 const empty=(id:string):Draft=>({seats:[],children:0,zone:getPlan(id)!.zones[0].id});
@@ -25,7 +26,7 @@ export function SeatBooking({selected,onRestaurant}:{selected:string;onRestauran
  function toggleTable(ids:string[]){const all=ids.every(s=>seats.includes(s));update({seats:all?seats.filter(s=>!ids.includes(s)):[...new Set([...seats,...ids])]});}
  function recommend(){const n=Math.min(plan.capacity,Math.max(1,Math.floor(groupSize)||1));setGroupSize(n);update({seats:suggestSeats(selected,n,draft.zone)});setAnnouncement(`${n} locuri selectate. Verifică mesele din sumar; selecția poate include mai multe zone.`);}
  async function submit(event:FormEvent<HTMLFormElement>){
-  event.preventDefault();if(status==='sending')return;setError('');setErrorField('');
+  event.preventDefault();if(demo){setError('Versiune de prezentare: rezervările nu sunt trimise.');return;}if(status==='sending')return;setError('');setErrorField('');
   const fields=new FormData(event.currentTarget);
   const values={name:fields.get('name'),phone:fields.get('phone'),email:fields.get('email'),restaurant:selected,adults,children,seatIds:seats,planVersion:PLAN_VERSION,tablePreference:fields.get('tablePreference')??'',consent:fields.get('consent')==='on',website:fields.get('website')??''};
   const signature=JSON.stringify(values);if(signature!==request.current.signature)request.current={signature,key:crypto.randomUUID()};
@@ -71,7 +72,8 @@ export function SeatBooking({selected,onRestaurant}:{selected:string;onRestauran
       <div className="honeypot" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off"/></label></div>
       <label className="consent"><input type="checkbox" name="consent" required/><span>Sunt de acord ca datele mele să fie folosite pentru această solicitare, conform <a href="#confidentialitate">informării de confidențialitate</a>.</span></label>
       {error&&<p role="alert" className="form-error">{error}</p>}
-      <button className="submit-reservation" type="submit" disabled={!seats.length||status==='sending'}>{status==='sending'?'Se trimite…':'Trimite solicitarea pentru locurile alese'} <span aria-hidden="true">↗</span></button>
+      <button className="submit-reservation" type="submit" disabled={demo||!seats.length||status==='sending'}>{demo?'Rezervări disponibile la lansare':status==='sending'?'Se trimite…':'Trimite solicitarea pentru locurile alese'} <span aria-hidden="true">↗</span></button>
+      {demo&&<p className="form-note">Versiune de prezentare. Poți explora locurile și calcula totalul; formularul nu trimite rezervări.</p>}
       {!seats.length&&<p className="form-note">Alege cel puțin un loc pe plan pentru a trimite solicitarea.</p>}
       <p className="booking-help">Preferi să vorbim? <a href="tel:+40755436284">0755 436 284 ↗</a> <a href="mailto:office@gallaplaza.ro">office@gallaplaza.ro ↗</a></p>
      </fieldset>

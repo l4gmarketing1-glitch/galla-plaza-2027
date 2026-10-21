@@ -1,3 +1,4 @@
+import { asset } from '../lib/asset';
 import { useEffect, useRef, useState } from 'react';
 import { restaurants, type Restaurant } from '../lib/galla/content';
 import './restaurant-tour.css';
@@ -62,7 +63,7 @@ export function RestaurantTour({onMenu,onChoose}:{onMenu:(r:Restaurant)=>void;on
   const observer=new IntersectionObserver(entries=>{
    if(!entries.some(e=>e.isIntersecting)||economicalRef.current||controller)return;
    controller=new AbortController();
-   const source=innerWidth<700?'/assets/world/walkthrough-mobile.mp4':'/assets/world/walkthrough.mp4';
+   const source=innerWidth<700?asset('/assets/world/walkthrough-mobile.mp4'):asset('/assets/world/walkthrough.mp4');
    fetch(source,{signal:controller.signal}).then(r=>{if(!r.ok)throw new Error('Video unavailable');return r.blob();}).then(blob=>{
     if(disposed||economicalRef.current)return;objectUrl=URL.createObjectURL(blob);film.src=objectUrl;film.load();
    }).catch(()=>{/* The poster and all restaurant controls remain available. */});
@@ -86,7 +87,7 @@ export function RestaurantTour({onMenu,onChoose}:{onMenu:(r:Restaurant)=>void;on
    <div className="tour-main">
     <div className="tour-visual">
      <div className="tour-plane" ref={plane}>
-      <img className="tour-poster" src="/assets/world/walkthrough.webp" alt="Curtea Galla Plaza, cu restaurantele în dreapta și în stânga aleii" width="1440" height="810" loading="lazy"/>
+      <img className="tour-poster" src={asset('/assets/world/walkthrough.webp')} alt="Curtea Galla Plaza, cu restaurantele în dreapta și în stânga aleii" width="1440" height="810" loading="lazy"/>
       <video ref={video} className={loaded?'tour-video is-ready':'tour-video'} muted playsInline preload="none" aria-hidden="true"/>
       <div className="tour-map-pins">{tourRestaurants.map((r,i)=><button key={r.id} data-visible={i===0||economical} className={`tour-pin pin-${i}${active===i?' is-active':''}`} style={{left:`${stops[i].x}%`,top:`${stops[i].y}%`}} aria-label={`Explorează ${String(i+1).padStart(2,'0')} ${r.name}`} aria-pressed={active===i} onClick={()=>jump(i)}><span>0{i+1}</span><strong>{r.name}</strong></button>)}</div>
      </div>
