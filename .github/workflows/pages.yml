@@ -32,10 +32,25 @@ jobs:
     permissions:
       pages: write
       id-token: write
+      actions: read
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Wait for the existing branch publisher
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The repository also has its original branch-based Pages publisher.
+          # Publish the Vite artifact last so that raw source cannot replace it.
+          for attempt in $(seq 1 60); do
+            runs=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$GITHUB_SHA&per_page=100")
+            pending=$(echo "$runs" | jq '[.workflow_runs[] | select(.path == "dynamic/pages/pages-build-deployment" and .status != "completed")] | length')
+            if [ "$pending" = "0" ]; then exit 0; fi
+            sleep 5
+          done
+          echo "The original Pages publisher did not finish in time."
+          exit 1
       - name: Deploy preview
         id: deployment
         uses: actions/deploy-pages@v4
