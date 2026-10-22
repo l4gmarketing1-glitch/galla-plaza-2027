@@ -1,0 +1,30 @@
+.galla-experiences{background:#e6e9df;color:#14271e;padding-block:100px 65px;--experience-ink:#14271e;--experience-muted:#4e5f53;--experience-rule:#14271e30}
+.galla-experiences .eyebrow{color:#536457;font-size:10px;letter-spacing:.19em}
+.experience-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:50px;margin-bottom:55px}
+.experience-heading h2{font-size:clamp(46px,5.5vw,85px)}
+.experience-heading>p{font-size:15px;line-height:1.8;max-width:37ch;color:var(--experience-muted);padding-bottom:5px}
+.experience-stories{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:55px 35px}
+.experience-music{grid-column:span 7}.experience-children{grid-column:span 5}.experience-outdoors,.experience-treats{grid-column:span 6}
+.experience-photo{position:relative;overflow:hidden;height:310px;background:#c7cdbd}
+.experience-photo img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.experience-story:hover .experience-photo img{transform:scale(1.025)}
+.experience-photo>span{position:absolute;bottom:0;left:0;right:0;padding:45px 24px 22px;color:#fff;background:linear-gradient(transparent,#081810c9);font-size:9px;letter-spacing:.17em}
+.experience-story-copy{display:grid;grid-template-columns:1fr 1.2fr;gap:24px;padding-top:26px}
+.experience-story h3{font-size:clamp(26px,2.6vw,39px);font-weight:400;line-height:1.08;letter-spacing:-.04em}
+.experience-story-copy p{font-size:13px;color:var(--experience-muted);line-height:1.8}
+.experience-story-copy .experience-detail{font-size:10px;margin-top:18px;padding-top:14px;border-top:1px solid var(--experience-rule);line-height:1.8}
+.experience-children{background:#d8dfce;border:1px solid #14271e18;padding:38px clamp(26px,3vw,46px);display:flex;flex-direction:column}
+.experience-children h3{font-size:clamp(30px,3.3vw,50px);font-weight:400;letter-spacing:-.045em;line-height:1.12;margin-top:25px}
+.experience-children h3 em{font-style:normal;color:#65764f}
+.children-intro{font-size:14px;line-height:1.8;color:var(--experience-muted);max-width:34ch;margin-top:20px}
+.children-moments{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;padding:22px 0 0;margin:auto 0 0;list-style:none}
+.children-moments li{display:flex;align-items:center;gap:12px;min-height:82px;border-top:1px solid var(--experience-rule);font-size:13px;line-height:1.45}
+.children-moments svg{width:34px;height:34px;flex-shrink:0;color:#4c6240}
+.experience-footer{display:flex;align-items:center;justify-content:space-between;gap:30px;border-top:1px solid var(--experience-rule);padding-top:28px;margin-top:55px}
+.experience-footer p{font-size:11px;line-height:1.7;color:var(--experience-muted)}
+.experience-footer a{display:flex;align-items:center;gap:30px;font-size:15px;white-space:nowrap;min-height:44px}
+.experience-footer a span{font-size:28px}.experience-footer a:focus-visible{outline:2px solid #14271e;outline-offset:6px}
+@media(min-width:1550px){.experience-photo{height:380px}}
+@media(max-width:1100px){.experience-stories{gap:40px 24px}.experience-music,.experience-children{grid-column:span 6}.experience-story-copy{grid-template-columns:1fr;gap:16px}.experience-children{padding:30px 25px}.children-moments{gap:0 15px}.children-moments li{gap:8px;font-size:12px}.experience-heading>p{font-size:14px}}
+@media(max-width:760px){.galla-experiences{padding-block:65px 40px}.experience-heading{display:block;margin-bottom:35px}.experience-heading>p{margin-top:24px;max-width:37ch}.experience-stories{grid-template-columns:1fr;gap:38px}.experience-music,.experience-children,.experience-outdoors,.experience-treats{grid-column:auto}.experience-photo{height:auto;aspect-ratio:5/4}.experience-story-copy{grid-template-columns:1fr;gap:16px;padding-top:22px}.experience-story h3{font-size:34px}.experience-story-copy p{font-size:14px}.experience-children{padding:30px 25px}.experience-children h3{font-size:clamp(34px,8vw,46px);margin-top:20px}.children-intro{margin-top:18px}.children-moments{padding-top:25px;gap:0 20px}.children-moments li{min-height:86px;font-size:13px}.experience-footer{display:block;margin-top:38px;padding-top:24px}.experience-footer a{justify-content:space-between;margin-top:18px}}
+@media(prefers-reduced-motion:reduce){.experience-photo img{transition:none}.experience-story:hover .experience-photo img{transform:none}}
