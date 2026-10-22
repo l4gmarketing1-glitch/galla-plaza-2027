@@ -8,7 +8,7 @@
 - Tipografia paginii: Outfit, găzduit local, licență SIL Open Font License în `public/assets/fonts/OFL.txt`.
 - Coperta socială: scenă Seedance cu tipografie compusă în Higgsfield; iconurile și interfața sunt desenate în cod.
 
-Niciun alt model generativ nu a fost folosit. Site-ul nu face apeluri de generare AI la vizitatori și nu depinde de serviciile Higgsfield la rulare.
+Materialele inițiale au fost realizate cu Seedance 2.5; imaginile activităților au fost înlocuite cu imagini ChatGPT la cererea utilizatorului, conform reviziei din 22 octombrie de mai jos. Site-ul nu face apeluri de generare AI la vizitatori și nu depinde de serviciile de generare la rulare.
 
 ## Revizia turului cinematic · 15 octombrie 2026
 
@@ -52,3 +52,10 @@ Montaj din sursele existente Higgsfield Seedance 2.5: atmosferă/trupă `831e018
 ## Fotografii restaurante · 21 octombrie 2026
 
 Imaginile active din carduri și tur sunt cele patru fotografii furnizate de utilizator: `Rev Game On.jpg`, `Rev Rosa.jpg`, `Rev Ciorbar.jpg`, `Rev Tajine.jpg`. Conversie WebP, calitate 86, fără generare sau retușare, proporțiile originale păstrate. Fișiere: `game-on-revelion.webp` (144.704 bytes), `rossa-revelion.webp` (139.908 bytes), `ciorbar-revelion.webp` (87.154 bytes), `tajine-revelion.webp` (241.600 bytes). Încadrarea vizibilă folosește stilurile existente. Descrierile de prezentare și textele alternative au fost adaptate fotografiilor; meniurile complete nu au fost modificate.
+
+## Activități generale și copii · 22 octombrie 2026
+
+Șapte imagini originale create cu generatorul integrat ChatGPT, autorizat explicit de utilizator după epuizarea creditelor Higgsfield. Sunt imagini ilustrative, nu fotografii documentare ale locației sau ale unui eveniment trecut. Cele trei imagini pentru activități generale nu sunt cadre extrase din colajul hero. Cele patru imagini pentru copii prezintă exclusiv activitățile confirmate: pictură pe față, aranjarea părului, sală de jocuri și ateliere.
+
+Fișiere active: `public/assets/activity-{music,fireworks,desserts,face-painting,hair-styling,games,workshops}.webp`, plus variantele `-small.webp`. Exporturi WebP la 1200 și 600 px, calitate 81, fără retușare. Imaginile folosesc `srcset` și încărcare lazy. Prompturile finale sunt în `ACTIVITY-IMAGE-PROMPTS.md`.
+
