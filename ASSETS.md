@@ -59,3 +59,10 @@ Imaginile active din carduri și tur sunt cele patru fotografii furnizate de uti
 
 Fișiere active: `public/assets/activity-{music,fireworks,desserts,face-painting,hair-styling,games,workshops}.webp`, plus variantele `-small.webp`. Exporturi WebP la 1200 și 600 px, calitate 81, fără retușare. Imaginile folosesc `srcset` și încărcare lazy. Prompturile finale sunt în `ACTIVITY-IMAGE-PROMPTS.md`.
 
+## Optimizare media · 22 octombrie 2026
+
+Aceleași fotografii și filme, fără generare nouă sau schimbări de montaj. Cele 11 fotografii active au variante AVIF și WebP la 480, 960 și maximum 1200 px (fără mărire artificială), în `public/assets/optimized/`. Variantele AVIF au calitate 48, WebP 73; previzualizările de 40 px sunt incluse în HTML. `src/lib/media-manifest.json` păstrează dimensiunile, variantele și previzualizările. Fotografiile folosesc `picture`, `srcset`, încărcare anticipată lângă viewport și preload selectiv pentru secțiunea din URL.
+
+Filmele `*-fast.mp4` păstrează exact rezoluția, durata, 24 fps și conținutul versiunilor aprobate, H.264 fără sunet, faststart. Hero desktop: 2.310.588 → 1.504.805 bytes; hero telefon: 967.823 → 705.938 bytes. Tur desktop: 4.793.409 → 2.288.002 bytes; tur telefon: 3.076.021 → 1.553.152 bytes. GOP 48 pentru hero și 12/8 pentru tur. SSIM comparativ 0,984–0,987. Turul folosește încărcare video nativă cu cereri HTTP Range în locul descărcării complete într-un Blob. Linkurile directe spre secțiunile de jos nu declanșează filmele din secțiunile traversate automat.
+
+Fontul Outfit a fost convertit fără schimbarea caracterelor sau a axelor variabile: TTF 110.884 → WOFF2 45.260 bytes. Fișierele originale rămân disponibile pentru revenire.

@@ -1,4 +1,5 @@
 import { asset } from '../lib/asset';
+import { MediaImage } from './MediaImage';
 import './experiences.css';
 
 const generalActivities = [
@@ -17,7 +18,7 @@ const kidsActivities = [
 
 function ActivityPhoto({name,alt,kids=false}:{name:string;alt:string;kids?:boolean}){
  const path='/assets/activity-'+name;
- return <img src={asset(path+'.webp')} srcSet={asset(path+'-small.webp')+' 600w, '+asset(path+'.webp')+' 1200w'} sizes={kids?'(max-width: 600px) 88vw, (max-width: 1000px) 43vw, 22vw':'(max-width: 760px) 88vw, 29vw'} alt={alt} width="1200" height="900" loading="lazy" decoding="async"/>;
+ return <MediaImage src={asset(path+'.webp')} sizes={kids?'(max-width: 600px) 88vw, (max-width: 1000px) 43vw, 22vw':'(max-width: 760px) 88vw, 29vw'} alt={alt}/>;
 }
 
 export function Experiences(){
@@ -49,4 +50,3 @@ export function Experiences(){
   </section>
  </>;
 }
-

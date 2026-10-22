@@ -1,4 +1,6 @@
 import { asset } from '../lib/asset';
+import { observeMediaIntent } from '../lib/media-intent';
+import { MediaImage } from './MediaImage';
 import { useEffect, useRef, useState } from 'react';
 import { restaurants, type Restaurant } from '../lib/galla/content';
 import './restaurant-tour.css';
@@ -30,7 +32,7 @@ export function RestaurantTour({onMenu,onChoose}:{onMenu:(r:Restaurant)=>void;on
   const section=root.current!,film=video.current!,layer=plane.current!;
   const mq=matchMedia('(prefers-reduced-motion: reduce)'),shortViewport=matchMedia('(max-height: 620px)');
   const connection=(navigator as Navigator & {connection?:{saveData?:boolean;effectiveType?:string}}).connection;
-  let raf=0,lastFrame=0,disposed=false,objectUrl='',controller:AbortController|undefined;
+  let raf=0,lastFrame=0,loadTimer=0;
   const pins=Array.from(layer.querySelectorAll<HTMLButtonElement>('.tour-pin'));
   const trackPins=()=>{
    const time=economicalRef.current?0:film.currentTime;
@@ -45,7 +47,7 @@ export function RestaurantTour({onMenu,onChoose}:{onMenu:(r:Restaurant)=>void;on
     pins[i].dataset.visible=String(visible);pins[i].tabIndex=visible?0:-1;pins[i].setAttribute('aria-hidden',String(!visible));
    }
   };
-  const preferences=()=>{const value=mq.matches||shortViewport.matches||!!connection?.saveData||/2g/.test(connection?.effectiveType||'');economicalRef.current=value;setEconomical(value);if(value){controller?.abort();controller=undefined;film.removeAttribute('src');film.load();setLoaded(false);trackPins();if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl='';}}else observer.observe(section);schedule();};
+  const preferences=()=>{const value=mq.matches||shortViewport.matches||!!connection?.saveData||/2g/.test(connection?.effectiveType||'');economicalRef.current=value;setEconomical(value);if(value){clearTimeout(loadTimer);film.removeAttribute('src');film.load();setLoaded(false);trackPins();}else observer.observe(section);schedule();};
   const seek=()=>{if(!economicalRef.current&&Number.isFinite(film.duration)&&!film.seeking){const target=progress.current*Math.max(0,film.duration-.08);if(Math.abs(film.currentTime-target)>.04)film.currentTime=target;}};
   const update=(now:number)=>{
    raf=0;if(economicalRef.current){trackPins();return;}
@@ -61,20 +63,25 @@ export function RestaurantTour({onMenu,onChoose}:{onMenu:(r:Restaurant)=>void;on
   };
   function schedule(){if(!raf){lastFrame=0;raf=requestAnimationFrame(update);}}
   const observer=new IntersectionObserver(entries=>{
-   if(!entries.some(e=>e.isIntersecting)||economicalRef.current||controller)return;
-   controller=new AbortController();
-   const source=innerWidth<700?asset('/assets/world/walkthrough-mobile.mp4'):asset('/assets/world/walkthrough.mp4');
-   fetch(source,{signal:controller.signal}).then(r=>{if(!r.ok)throw new Error('Video unavailable');return r.blob();}).then(blob=>{
-    if(disposed||economicalRef.current)return;objectUrl=URL.createObjectURL(blob);film.src=objectUrl;film.load();
-   }).catch(()=>{/* The poster and all restaurant controls remain available. */});
-   observer.unobserve(section);
-  },{rootMargin:'500px'});
+   clearTimeout(loadTimer);
+   if(!entries.some(e=>e.isIntersecting)||economicalRef.current||film.hasAttribute('src')||!intent.allows())return;
+   // Dwell avoids downloading the tour when an anchor jump passes over it.
+   loadTimer=window.setTimeout(()=>{
+    const bounds=section.getBoundingClientRect();
+    if(economicalRef.current||bounds.bottom<0||bounds.top>innerHeight+300||!intent.allows())return;
+    // Native HTTP range requests can display and seek before the whole file arrives.
+    film.preload='auto';
+    film.src=innerWidth<700?asset('/assets/world/walkthrough-mobile-fast.mp4'):asset('/assets/world/walkthrough-fast.mp4');
+    film.load();observer.unobserve(section);
+   },350);
+  },{rootMargin:'300px'});
+  const intent=observeMediaIntent('harta',()=>{observer.unobserve(section);observer.observe(section);});
   const ready=()=>{setLoaded(true);seek();};
   const sought=()=>{trackPins();seek();};
   film.addEventListener('loadeddata',ready);film.addEventListener('seeked',sought);
   window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);mq.addEventListener('change',preferences);shortViewport.addEventListener('change',preferences);
   preferences();schedule();
-  return()=>{disposed=true;controller?.abort();observer.disconnect();cancelAnimationFrame(raf);window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);mq.removeEventListener('change',preferences);shortViewport.removeEventListener('change',preferences);film.removeEventListener('loadeddata',ready);film.removeEventListener('seeked',sought);film.removeAttribute('src');film.load();if(objectUrl)URL.revokeObjectURL(objectUrl);};
+  return()=>{intent.dispose();clearTimeout(loadTimer);observer.disconnect();cancelAnimationFrame(raf);window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);mq.removeEventListener('change',preferences);shortViewport.removeEventListener('change',preferences);film.removeEventListener('loadeddata',ready);film.removeEventListener('seeked',sought);film.removeAttribute('src');film.load();};
  },[]);
  function jump(i:number){
   if(economical){activeRef.current=i;setActive(i);return;}
@@ -100,7 +107,7 @@ export function RestaurantTour({onMenu,onChoose}:{onMenu:(r:Restaurant)=>void;on
       <div className="tour-menu-title"><span aria-hidden="true">0{i+1}</span><h3>{r.name}</h3></div>
       <p className="tour-side">{stops[i].side}</p>
       <p className="tour-intro">{r.intro}</p>
-      <div className="tour-food"><img src={r.image} alt={r.imageAlt} width="960" height="640" loading="lazy"/><p>{r.cuisine}</p></div>
+      <div className="tour-food"><MediaImage src={r.image} alt={r.imageAlt} sizes="(max-width: 700px) 50vw, 30vw"/><p>{r.cuisine}</p></div>
       <div className="tour-tasting"><h4>Din meniul serii</h4><ul>{stops[i].dishes.map(d=><li key={d}>{d}</li>)}</ul></div>
       <div className="tour-actions"><button onClick={()=>onMenu(r)}>Vezi meniul complet <span aria-hidden="true">↗</span></button><button onClick={()=>onChoose(r.id)}>Alege masa aici <span aria-hidden="true">→</span></button></div>
      </article>)}
