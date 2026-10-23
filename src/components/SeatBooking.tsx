@@ -47,9 +47,9 @@ export function SeatBooking({selected,onRestaurant}:{selected:string;onRestauran
      <fieldset className="restaurant-choice seat-restaurant-choice"><legend><span>01</span> Alege restaurantul</legend><div>{tourRestaurants.map(r=><label key={r.id} className={selected===r.id?'choice selected':'choice'}><input type="radio" name="restaurant" value={r.id} checked={selected===r.id} onChange={()=>{onRestaurant(r.id);setAnnouncement('');setError('');}}/><span>{r.name}<small>{getPlan(r.id)!.capacity} locuri în plan</small></span><span aria-hidden="true">{selected===r.id?'✓':'↗'}</span></label>)}</div></fieldset>
      <fieldset className="seat-plan-step"><legend><span>02</span> Alege unde stai</legend>
       <div className="seat-plan-intro"><p>{plan.subtitle}</p><span className="draft-badge">PLAN ORIENTATIV</span></div>
-      <p className="seat-plan-note" id="plan-note">Așezarea este propusă. Locurile alese sunt preferințe; disponibilitatea și amplasarea se confirmă cu echipa.</p>
+      <p className="seat-plan-note" id="plan-note">Locurile alese sunt doar pentru preferințe; disponibilitatea și amplasarea se confirmă cu echipa.</p>
       <div className="seat-zone-nav" aria-label="Zonele restaurantului">{plan.zones.map(z=><button key={z.id} type="button" aria-pressed={draft.zone===z.id} onClick={()=>update({zone:z.id})}>{z.name}<small>{z.detail}{groups.some(g=>g.zone===z.id)?` · ${groups.filter(g=>g.zone===z.id).reduce((n,g)=>n+g.seats.length,0)} alese`:''}</small></button>)}</div>
-      <p className="plan-instructions">Apasă pe un scaun pentru un loc sau pe numărul mesei pentru întreaga masă.<span> Pe telefon, deplasează planul lateral.</span></p>
+      <p className="plan-instructions">Apasă pe un scaun pentru un loc sau pe numărul mesei pentru a rezerva întreaga masă.<span> Pe telefon, deplasează planul lateral.</span></p>
       <div className="floor-scroll" tabIndex={0} role="region" aria-label={`Plan interactiv ${restaurant.name}, ${plan.zones.find(z=>z.id===draft.zone)!.name}`} aria-describedby="plan-note">
        <div className={`floor-plan floor-${plan.style}`} style={{'--floor-rows':Math.max(...plan.tables.filter(t=>t.zone===draft.zone).map(t=>t.row))+1} as CSSProperties}>
         <div className="floor-top"><span>GALLA PLAZA</span><strong>{plan.zones.find(z=>z.id===draft.zone)!.name}</strong><span>REVELION 2027</span></div>
