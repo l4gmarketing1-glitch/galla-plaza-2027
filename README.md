@@ -71,4 +71,8 @@ Formularul unic include restaurant, scaune exacte, compoziția adulți/copii, co
 
 ## Prezentare GitHub Pages
 
-Workflow-ul `.github/workflows/pages.yml` construiește și publică automat prezentarea de pe `main`. `pnpm run build:pages` configurează prefixul `/galla-plaza-2027/`, păstrează `noindex` și dezactivează trimiterea rezervărilor. Selecția locurilor și calculul prețului rămân interactive. Versiunea normală pentru Vercel folosește în continuare `pnpm run build` și formularul API.
+Workflow-ul `.github/workflows/pages.yml` construiește și publică automat prezentarea de pe `main`. `pnpm run build:pages` citește domeniul din `CNAME`: pentru `revelion.gallaplaza.ro` folosește rădăcina `/`, iar fără domeniu personalizat folosește prefixul `/galla-plaza-2027/`. Fișierul `CNAME` este inclus și în `dist`. Astfel CSS-ul, JavaScript-ul, imaginile și videoclipurile au căile potrivite pentru domeniul configurat.
+
+În Settings → Pages, domeniul personalizat trebuie să fie `revelion.gallaplaza.ro`. În DNS, înregistrarea CNAME `revelion` indică spre `l4gmarketing1-glitch.github.io` (fără numele repository-ului). Activează Enforce HTTPS după emiterea certificatului. Sursa recomandată pentru acest proiect Vite este GitHub Actions; workflow-ul existent așteaptă și publicarea din branch, dacă aceasta mai este activă, pentru ca artefactul construit să fie publicat ultimul.
+
+Buildul Pages păstrează `noindex` și dezactivează trimiterea rezervărilor. Selecția locurilor și calculul prețului rămân interactive. Versiunea normală pentru Vercel folosește în continuare `pnpm run build` și formularul API.
