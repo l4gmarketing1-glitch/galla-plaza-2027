@@ -1,5 +1,5 @@
 .opening{position:relative}
-.scroll-fireworks{position:absolute;top:-46px;right:7%;width:360px;max-width:86%;height:220px;pointer-events:none;contain:strict;opacity:0;z-index:1}
+.scroll-fireworks{position:absolute;top:-46px;right:7%;width:440px;max-width:86%;height:220px;pointer-events:none;contain:strict;opacity:0;z-index:1}
 .scroll-fireworks[data-state=playing]{opacity:1}
-@media(max-width:860px){.scroll-fireworks{top:-61px;right:12px;width:260px;height:180px}}
+@media(max-width:860px){.scroll-fireworks{top:-61px;right:12px;width:320px;height:180px}}
 @media(prefers-reduced-motion:reduce){.scroll-fireworks{display:none}}

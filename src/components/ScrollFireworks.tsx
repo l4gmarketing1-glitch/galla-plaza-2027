@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './scroll-fireworks.css';
 
-/** One short, local celebration per page visit; no animation loop while idle. */
+/** Two short waves per page visit; no animation loop while idle. */
 export function ScrollFireworks(){
  const canvas=useRef<HTMLCanvasElement>(null);
  useEffect(()=>{
@@ -27,7 +27,12 @@ export function ScrollFireworks(){
    context.scale(ratio,ratio);context.lineCap='round';
    element.dataset.state='playing';
    const colors=['#f5d99a','#dcb96d','#fff1ce','#c99a48'];
-   const bursts=[{x:width*.32,y:height*.48,delay:0,radius:small?40:52},{x:width*.73,y:height*.38,delay:340,radius:small?30:40}];
+   const bursts=[
+    {x:width*.32,y:height*.48,delay:0,radius:small?40:52},
+    {x:width*.73,y:height*.38,delay:180,radius:small?30:40},
+    {x:width*.13,y:height*.40,delay:360,radius:small?22:30},
+    {x:width*.52,y:height*.30,delay:540,radius:small?24:32},
+   ];
    const particles=bursts.flatMap((burst,b)=>Array.from({length:small?24:36},(_,i)=>{
     const angle=i*Math.PI*2/(small?24:36)+b*.3;
     const radius=burst.radius*(.68+((i*17)%11)/32);
@@ -36,12 +41,14 @@ export function ScrollFireworks(){
    const origin=performance.now();let previous=-Infinity;
    const draw=(now:number)=>{
     const elapsed=now-origin;
-    if(elapsed>2250){stop();return;}
+    if(elapsed>=4900){stop();return;}
     frame=requestAnimationFrame(draw);
     if(now-previous<32)return;previous=now;
+    const wave=Math.floor(elapsed/2500);
+    if(element.dataset.wave!==String(wave+1))element.dataset.wave=String(wave+1);
     context.clearRect(0,0,width,height);
     for(const p of particles){
-     const age=elapsed-p.delay;if(age<0||age>p.life)continue;
+     const age=elapsed-wave*2500-p.delay;if(age<0||age>p.life)continue;
      const t=age/p.life,ease=1-Math.pow(1-t,3);
      const tail=Math.max(0,t-.055),tailEase=1-Math.pow(1-tail,3);
      const x=p.x+p.dx*ease,y=p.y+p.dy*ease+8*t*t;
