@@ -21,13 +21,13 @@ export function ScrollFireworks(){
    if(bounds.top>innerHeight*.84||bounds.bottom<innerHeight*.1)return;
    consumed=true;window.removeEventListener('scroll',schedule);
    const context=element.getContext('2d');if(!context){stop();return;}
-   const width=bounds.width,height=bounds.height,small=innerWidth<700;
+   const width=bounds.width,height=bounds.height,small=innerWidth<=860;
    const ratio=Math.min(devicePixelRatio||1,1.5);
    element.width=Math.round(width*ratio);element.height=Math.round(height*ratio);
    context.scale(ratio,ratio);context.lineCap='round';
    element.dataset.state='playing';
    const colors=['#f5d99a','#dcb96d','#fff1ce','#c99a48'];
-   const bursts=[{x:width*.32,y:height*.48,delay:0,radius:small?55:75},{x:width*.73,y:height*.38,delay:340,radius:small?43:60}];
+   const bursts=[{x:width*.32,y:height*.48,delay:0,radius:small?40:52},{x:width*.73,y:height*.38,delay:340,radius:small?30:40}];
    const particles=bursts.flatMap((burst,b)=>Array.from({length:small?24:36},(_,i)=>{
     const angle=i*Math.PI*2/(small?24:36)+b*.3;
     const radius=burst.radius*(.68+((i*17)%11)/32);
@@ -44,10 +44,10 @@ export function ScrollFireworks(){
      const age=elapsed-p.delay;if(age<0||age>p.life)continue;
      const t=age/p.life,ease=1-Math.pow(1-t,3);
      const tail=Math.max(0,t-.055),tailEase=1-Math.pow(1-tail,3);
-     const x=p.x+p.dx*ease,y=p.y+p.dy*ease+30*t*t;
+     const x=p.x+p.dx*ease,y=p.y+p.dy*ease+8*t*t;
      context.globalAlpha=Math.min(1,age/65)*Math.pow(1-t,1.15)*.9;
      context.strokeStyle=p.color;context.lineWidth=1.35;
-     context.beginPath();context.moveTo(p.x+p.dx*tailEase,p.y+p.dy*tailEase+30*tail*tail);context.lineTo(x,y);context.stroke();
+     context.beginPath();context.moveTo(p.x+p.dx*tailEase,p.y+p.dy*tailEase+8*tail*tail);context.lineTo(x,y);context.stroke();
      context.fillStyle=p.color;context.beginPath();context.arc(x,y,1.25*(1-t)+.25,0,Math.PI*2);context.fill();
     }
    };
