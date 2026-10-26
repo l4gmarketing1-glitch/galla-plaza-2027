@@ -1,5 +1,7 @@
-.opening{position:relative}
+.opening,.fireworks-section{position:relative}
 .scroll-fireworks{position:absolute;top:-46px;right:7%;width:440px;max-width:86%;height:220px;pointer-events:none;contain:strict;opacity:0;z-index:1}
 .scroll-fireworks[data-state=playing]{opacity:1}
 @media(max-width:860px){.scroll-fireworks{top:-61px;right:12px;width:320px;height:180px}}
+.scroll-fireworks--header{top:0;right:6.5%;height:80px;width:400px}
+@media(max-width:860px){.scroll-fireworks--header{top:0;right:22px;height:54px;width:300px}}
 @media(prefers-reduced-motion:reduce){.scroll-fireworks{display:none}}

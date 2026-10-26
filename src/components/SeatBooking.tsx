@@ -3,6 +3,7 @@ import { tourRestaurants } from './RestaurantTour';
 import { calculateTotal, validateBooking } from '../lib/galla/booking.mjs';
 import { getPlan, getSeatGroups, suggestSeats, PLAN_VERSION } from '../lib/galla/seating.mjs';
 import './seat-booking.css';
+import { ScrollFireworks } from './ScrollFireworks';
 
 const demo=import.meta.env.VITE_DEMO_MODE==='true';
 const money=(n:number)=>new Intl.NumberFormat('ro-RO').format(n);
@@ -39,7 +40,8 @@ export function SeatBooking({selected,onRestaurant}:{selected:string;onRestauran
    setReceipt({reference:result.reference,restaurant:restaurant.name,guests:seats.length,total,places:groups.map(g=>`${g.tableId}: ${g.seats.join(', ')}`).join(' · ')});setStatus('success');request.current={signature:'',key:''};
   }catch(err){setError(err instanceof Error?err.message:'Conexiunea a fost întreruptă. Reîncearcă.');setStatus('error');}
  }
- return <section id="rezervare" className="booking section-wrap seat-booking">
+ return <section id="rezervare" className="booking section-wrap seat-booking fireworks-section">
+  <ScrollFireworks count={3} variant="fan" placement="header"/>
   <div className="section-heading"><p className="eyebrow">INVITAȚIA TA PENTRU 2027</p><h2>Fă loc unei<br/>nopți extraordinare.</h2><p>Restaurantul tău. Masa ta. Oamenii tăi.<br/>Alege locurile și trimite-ne totul într-o singură solicitare.</p></div>
   {status==='success'&&receipt?<div className="seat-receipt success-panel" role="status"><span aria-hidden="true">✓</span><p className="eyebrow">SOLICITARE PRIMITĂ · {receipt.reference}</p><h3>Un pas mai aproape de Galla.</h3><p>{receipt.restaurant} · {receipt.guests} persoane · {money(receipt.total)} lei</p><p className="receipt-places">{receipt.places}</p><p>Am primit datele și preferințele pentru locuri. Echipa va confirma amplasarea și disponibilitatea. Solicitarea nu blochează locurile și nu reprezintă un bilet achitat.</p><button type="button" onClick={()=>{update({seats:[],children:0});setReceipt(null);setStatus('idle');}}>O nouă solicitare ↗</button></div>:<form className="seat-reservation-form" aria-label="Solicitare de rezervare" onSubmit={submit}>
    <fieldset className="booking-workspace" disabled={status==='sending'}><legend className="sr-only">Configurează solicitarea de rezervare</legend>

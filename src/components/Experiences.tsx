@@ -1,5 +1,6 @@
 import { asset } from '../lib/asset';
 import { MediaImage } from './MediaImage';
+import { ScrollFireworks } from './ScrollFireworks';
 import './experiences.css';
 
 const generalActivities = [
@@ -23,7 +24,8 @@ function ActivityPhoto({name,alt,kids=false}:{name:string;alt:string;kids?:boole
 
 export function Experiences(){
  return <>
-  <section id="experiente" className="galla-experiences section-wrap" aria-labelledby="experiences-title">
+  <section id="experiente" className="galla-experiences section-wrap fireworks-section" aria-labelledby="experiences-title">
+   <ScrollFireworks count={3} variant="willow" tone="light" placement="header"/>
    <div className="experience-heading">
     <div><p className="eyebrow">MUZICĂ. SPECTACOL. BUCURIE.</p><h2 id="experiences-title">Toată Galla.<br/>Toată noaptea.</h2></div>
     <p>De pe ringul de dans, sub cerul cu artificii.<br/>O noapte de trăit cu toți ai tăi.</p>
@@ -35,7 +37,8 @@ export function Experiences(){
     </article>)}
    </div>
   </section>
-  <section id="copii" className="galla-kids section-wrap" aria-labelledby="children-title">
+  <section id="copii" className="galla-kids section-wrap fireworks-section" aria-labelledby="children-title">
+   <ScrollFireworks count={2} variant="stars" tone="light" placement="header"/>
    <div className="experience-heading kids-heading">
     <div><p className="eyebrow">PROPRIUL LOR REVELION</p><h2 id="children-title">Și cei mici.<br/><em>Mai ales cei mici.</em></h2></div>
     <p>O lume de joacă, culoare și descoperiri.<br/>Pentru ei, distracția are propriul program.</p>
